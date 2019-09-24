@@ -1,0 +1,6 @@
+dev.env
+/blockexplorer/logs/
+/blockexplorer/deps/
+/.env
+.DS_Store
+/blockexplorer/apps/explorer/node_modules/

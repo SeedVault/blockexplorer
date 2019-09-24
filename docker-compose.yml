@@ -1,0 +1,38 @@
+version: '2.1'
+services:
+
+  # Explorer Postgres DB
+  explorer_db:
+    image: postgres:10.6
+    restart: always
+    environment:
+      - PGHOST=${PG_HOST}
+      - PGUSER=${PG_USER}
+
+  # Blockchain Explorer
+  explorer:
+    build:
+      context: ./blockexplorer
+      dockerfile: docker/Dockerfile
+      args:
+        SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+    restart: always
+    volumes:
+      - ./blockexplorer:/app
+    environment:
+      - ETHEREUM_JSONRPC_VARIANT=parity
+      - COIN=ETH
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - ETHEREUM_JSONRPC_HTTP_URL=${ETHEREUM_JSONRPC_HTTP_URL}
+      - ETHEREUM_JSONRPC_TRACE_URL=${ETHEREUM_JSONRPC_TRACE_URL}
+      - ETHEREUM_JSONRPC_WS_URL=${ETHEREUM_JSONRPC_WS_URL}
+      - DATABASE_URL=postgresql://${DB_USER}:@explorer_db:5432/explorer?ssl=false
+    ports:
+      - 4000:4000
+    depends_on:
+      - explorer_db
+    command:
+      - ./run.sh
+
+volumes:
+  blockexplorer:
