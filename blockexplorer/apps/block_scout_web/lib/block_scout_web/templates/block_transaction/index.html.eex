@@ -1,0 +1,44 @@
+<section class="container">
+
+  <%= render BlockScoutWeb.BlockView, "overview.html", assigns %>
+
+  <section>
+    <div class="card mb-3">
+      <div class="card-tabs">
+        <%=
+          link(
+            gettext("Transactions"),
+            class: "card-tab #{tab_status("transactions", @conn.request_path)}",
+            to: block_transaction_path(@conn, :index, @conn.params["block_hash_or_number"])
+            )
+        %>
+      </div>
+      <div class="card-body">
+        <h2 class="card-title"><%= gettext "Transactions" %></h2>
+        <%= if Enum.count(@transactions) > 0 do %>
+          <span data-selector="transactions-list">
+            <%= for transaction <- @transactions do %>
+              <%= render BlockScoutWeb.TransactionView, "_tile.html", transaction: transaction %>
+            <% end %>
+          </span>
+        <% else %>
+          <div class="tile tile-muted text-center">
+            <span data-selector="empty-transactions-list"><%= gettext "There are no transactions for this block." %></span>
+          </div>
+        <% end %>
+
+        <%= if @next_page_params do %>
+          <%= link(
+            gettext("Older"),
+            class: "button button-secondary button-sm float-right mt-3",
+            to: transaction_path(
+              @conn,
+              :index,
+              @next_page_params
+            )
+          ) %>
+        <% end %>
+      </div>
+    </div>
+  </section>
+</section>
