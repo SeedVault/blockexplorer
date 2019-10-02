@@ -20,6 +20,9 @@ services:
     volumes:
       - ./blockexplorer:/app
     environment:
+      - SUBNETWORK=SEED-Testnet
+      - LOGO=/images/seed-logo.svg
+      - LOGO_FOOTER=/images/seed-footer-logo.svg
       - ETHEREUM_JSONRPC_VARIANT=parity
       - COIN=ETH
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
