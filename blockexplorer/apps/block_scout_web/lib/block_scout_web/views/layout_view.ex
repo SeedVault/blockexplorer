@@ -20,6 +20,10 @@ defmodule BlockScoutWeb.LayoutView do
       "/images/blockscout_logo.svg"
   end
 
+  def blockscout_logo_footer do
+    "/images/blockscout_logo.svg"
+  end
+
   def subnetwork_title do
     Keyword.get(application_config(), :subnetwork) || "Sokol Testnet"
   end
