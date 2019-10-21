@@ -31,7 +31,7 @@ services:
       - ETHEREUM_JSONRPC_WS_URL=${ETHEREUM_JSONRPC_WS_URL}
       - DATABASE_URL=postgresql://${DB_USER}:@explorer_db:5432/explorer?ssl=false
     ports:
-      - 4000:4000
+      - 80:4000
     depends_on:
       - explorer_db
     command:
