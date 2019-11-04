@@ -16,6 +16,7 @@ services:
       dockerfile: docker/Dockerfile
       args:
         SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+        COIN_NAME: ${COIN_NAME}
     restart: always
     volumes:
       - ./blockexplorer:/app
