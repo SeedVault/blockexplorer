@@ -19,14 +19,13 @@ ADD apps/indexer/mix.exs ./apps/indexer/
 # RUN mix do local.hex --force, local.rebar --force
 RUN mix do deps.get, deps.compile
 
+ADD . .
 
-ARG COIN
-RUN if [ "$COIN" != "" ]; then sed -i s/"POA"/"${COIN}"/g apps/block_scout_web/priv/gettext/en/LC_MESSAGES/default.po; fi
+ARG COIN_NAME
+RUN if [ "$COIN_NAME" != "" ]; then sed -i s/"POA"/"${COIN_NAME}"/g apps/block_scout_web/priv/gettext/en/LC_MESSAGES/default.po; fi
 
 # Run forderground build and phoenix digest
 RUN mix compile
-
-ADD . .
 
 # Add blockscout npm deps
 RUN cd apps/block_scout_web/assets/ && \
