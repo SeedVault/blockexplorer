@@ -29,7 +29,7 @@ RUN mix compile
 
 # Add blockscout npm deps
 RUN cd apps/block_scout_web/assets/ && \
-    npm install && \
+    npm ci && \
     npm rebuild node-sass && \
     npm run deploy && \
     cd -
