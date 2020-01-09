@@ -48,15 +48,15 @@
                 ) %>
           </div>
         </li>
-        <li class="nav-item">
+        <!--<li class="nav-item">
           <%= link to: address_path(@conn, :index), class: "nav-link topnav-nav-link #{tab_status("accounts", @conn.request_path)}" do %>
             <span class="nav-link-icon">
               <%= render BlockScoutWeb.IconsView, "_accounts_icon.html" %>
             </span>
             <%= gettext("Accounts") %>
           <% end %>
-        </li>
-        <li class="nav-item dropdown">
+        </li>-->
+        <!--<li class="nav-item dropdown">
           <a href="#" role="button" id="navbarAPIsDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="nav-link-icon">
               <%= render BlockScoutWeb.IconsView, "_api_icon.html" %>
@@ -75,7 +75,7 @@
                   to: api_docs_path(@conn, :index)
                 ) %>
           </div>
-        </li>
+        </li>-->
         <li class="nav-item dropdown nav-item-networks">
           <a class="nav-link topnav-nav-link dropdown-toggle active-icon" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="nav-link-icon">
