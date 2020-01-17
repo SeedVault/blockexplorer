@@ -1,13 +1,26 @@
 version: '2.1'
-services:
 
+networks:
+    explorer_lan:
+        name: explorer_lan
+        driver: bridge
+
+services:
   # Explorer Postgres DB
   explorer_db:
     image: postgres:10.6
     restart: always
     environment:
-      - PGHOST=${PG_HOST}
-      - PGUSER=${PG_USER}
+      - PGHOST=postgres
+      - PGUSER=postgres
+    volumes:
+      - ./volumes/postgresql/var/lib/postgresql/data:/var/lib/postgresql/data
+    networks:
+      - explorer_lan
+    ports:
+      - ${BLOCKSCOUT_POSTGRESQL_PORT}:5432
+    expose:
+      - ${BLOCKSCOUT_POSTGRESQL_PORT}
 
   # Blockchain Explorer
   explorer:
@@ -15,8 +28,8 @@ services:
       context: ./blockexplorer
       dockerfile: docker/Dockerfile
       args:
-        SECRET_KEY_BASE: ${SECRET_KEY_BASE}
-        COIN_NAME: ${COIN_NAME}
+        SECRET_KEY_BASE: ${BLOCKSCOUT_SECRET_KEY_BASE}
+        COIN_NAME: ${BLOCKSCOUT_COIN_NAME}
     restart: always
     volumes:
       - ./blockexplorer:/app
@@ -25,18 +38,19 @@ services:
       - LOGO=/images/seed-logo.svg
       - LOGO_FOOTER=/images/seed-footer-logo.svg
       - ETHEREUM_JSONRPC_VARIANT=parity
-      - COIN=ETH
-      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
-      - ETHEREUM_JSONRPC_HTTP_URL=${ETHEREUM_JSONRPC_HTTP_URL}
-      - ETHEREUM_JSONRPC_TRACE_URL=${ETHEREUM_JSONRPC_TRACE_URL}
-      - ETHEREUM_JSONRPC_WS_URL=${ETHEREUM_JSONRPC_WS_URL}
-      - DATABASE_URL=postgresql://${DB_USER}:@explorer_db:5432/explorer?ssl=false
+      - COIN=
+      - SECRET_KEY_BASE=${BLOCKSCOUT_SECRET_KEY_BASE}
+      - ETHEREUM_JSONRPC_HTTP_URL=http://172.17.0.1:${PARITY_JSON_RPC_PORT}
+      - ETHEREUM_JSONRPC_TRACE_URL=http://172.17.0.1:${PARITY_JSON_RPC_PORT}
+      - ETHEREUM_JSONRPC_WS_URL=ws://172.17.0.1:${PARITY_WEB_SOCKETS_PORT}
+      - DATABASE_URL=postgresql://postgres:postgres@explorer_db:5432/explorer?ssl=false
+    networks:
+      - explorer_lan 
     ports:
-      - 80:4000
+      - ${BLOCKSCOUT_PORT}:4000
+    expose:
+      - ${BLOCKSCOUT_PORT}
     depends_on:
       - explorer_db
     command:
       - ./run.sh
-
-volumes:
-  blockexplorer:
